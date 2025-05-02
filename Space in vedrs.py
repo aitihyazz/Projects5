@@ -15,7 +15,12 @@ espeedy = 40
 bspeedy = 10
 cdistance = 27
 
+
 pygame.init()
+pygame.mixer.music.load('space-ambience.mp3')
+fire_sound = pygame.mixer.Sound('laser-gun-shot.mp3')  
+collision_sound = pygame.mixer.Sound('bomb.mp3')
+pygame.mixer.music.play(-1)
 screen = pygame.display.set_mode((screenwidth, screenhight))
 background = pygame.transform.scale(pygame.image.load('bg.png'), (screenwidth, screenhight))
 pygame.display.set_caption('space invaders')
@@ -107,16 +112,19 @@ while running:
                 bulletx = playerx
                 bullety = playery
                 fireb(bulletx, bullety)
+            fire_sound.play()
             if event.key == pygame.K_w and bulletstate == "ready":
                 bulletx = player1x
                 bullety = player1y
                 fireb(bulletx, bullety)
+                
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 pxchange = 0
             if event.key == pygame.K_a or event.key == pygame.K_d:
                 p1xchange = 0
+                
 
     playerx += pxchange
     playerx = max(0, min(playerx, screenwidth - 64))
@@ -142,6 +150,7 @@ while running:
             scorevalue += 1
             enemyx[i] = random.randint(0, screenwidth - 64)
             enemyy[i] = random.randint(estartymin, estartymax)
+            collision_sound.play()
 
         enemey(enemyx[i], enemyy[i], i)
 
